@@ -1,4 +1,5 @@
-# Vue File Agent
+# Vue File Agent TUS
+> Add Tus Feature(chunkSize, parallelUploads) to [Vue File Agent](https://safrazik.com/vue-file-agent/)
 
 > Every file deserves to be treated equally
 

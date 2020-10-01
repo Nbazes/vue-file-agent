@@ -34,6 +34,9 @@ export default Vue.extend({
     'read',
     'readonly',
     'resumable',
+    'retryDelays',
+    'chunkSize',
+    'parallelUploads',
     'sortable',
     'theme',
     'thumbnailSize',
@@ -84,7 +87,8 @@ export default Vue.extend({
       if (this.helpText) {
         return this.helpText;
       }
-      return 'Choose ' + (this.hasMultiple ? 'files' : 'file') + ' or drag & drop here';
+      // return 'Choose ' + (this.hasMultiple ? 'files' : 'file') + ' or drag & drop here';
+      return (this.hasMultiple ? '여로 파일을 ' : '파일을') + ' 선택하거나 여기로 드래그하세요.';
     },
     isDeletable(): boolean {
       if (typeof this.deletable === 'string') {
@@ -169,6 +173,13 @@ export default Vue.extend({
         }
       };
     },
+    tusOptionsFn() {
+      const tusOption: any = { };
+      if (this.retryDelays) { tusOption.retryDelays = this.retryDelays; }
+      if (this.chunkSize) { tusOption.chunkSize = this.chunkSize; }
+      if (this.retryDelays) { tusOption.parallelUploads = this.parallelUploads; }
+      return  tusOption;
+    },
     upload(
       url: string,
       headers: object,
@@ -186,6 +197,10 @@ export default Vue.extend({
         }
       }
       if (this.resumable) {
+        const retryDelays = this.retryDelays;
+        const chunkSize = this.chunkSize;
+        const parallelUploads = this.parallelUploads;
+
         return uploader.tusUpload(
           plugins.tus,
           url,
@@ -194,7 +209,8 @@ export default Vue.extend({
           (overallProgress) => {
             this.overallProgress = overallProgress;
           },
-          this.resumable === true ? undefined : this.resumable,
+          // this.resumable === true ? undefined : this.resumable,
+          this.tusOptionsFn,
         );
       }
       return new Promise((resolve, reject) => {

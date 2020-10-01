@@ -8,6 +8,8 @@ type CreateFormDataFn = (fileRecord: FileRecord) => FormData;
 export interface TusOptions {
   retryDelays?: number[];
   metadata?: any;
+  chunkSize?: number;
+  parallelUploads?: number;
 }
 
 export type TusOptionsFn = (fileRecord: FileRecord) => TusOptions;
@@ -93,13 +95,23 @@ class UploadHelper {
   // }
 
   public prepareUploadError(fileRecord: FileRecord, err: AjaxError, timeout?: number) {
-    let errorText = err.message;
-    if (err.response && err.response.data) {
-      try {
-        const errorMsg = err.response.data.error || JSON.parse(err.response.data).error;
-        errorText = errorMsg;
-      } catch (e) {
-        // ignore
+    let errorText = null;
+    try {
+      const anyError = err as any;
+      errorText = JSON.parse(anyError.originalRequest.response).message
+    } catch(e) {
+
+    }
+
+    if(errorText === null) {
+      errorText = err.message;
+      if (err.response && err.response.data) {
+        try {
+          const errorMsg = err.response.data.error || JSON.parse(err.response.data).error;
+          errorText = errorMsg;
+        } catch (e) {
+          // ignore
+        }
       }
     }
     if (!fileRecord.error) {
@@ -300,6 +312,8 @@ class UploadHelper {
         endpoint: url,
         headers,
         retryDelays: tusOptions.retryDelays ? tusOptions.retryDelays : [0, 3000, 5000, 10000, 20000],
+        chunkSize: tusOptions.chunkSize ? tusOptions.chunkSize : Infinity,
+        parallelUploads: tusOptions.parallelUploads ? tusOptions.parallelUploads : 1,
         metadata: tusOptions.metadata
           ? tusOptions.metadata
           : {
