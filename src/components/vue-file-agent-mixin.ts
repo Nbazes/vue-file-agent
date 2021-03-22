@@ -45,6 +45,7 @@ export default Vue.extend({
     'uploadUrl',
     'uploadWithCredentials',
     'value',
+    'skipCreate'
   ],
   components: {
     VueFileIcon,
@@ -174,11 +175,11 @@ export default Vue.extend({
       };
     },
     tusOptionsFn() {
-      const tusOption: any = { };
+      const tusOption: any = {};
       if (this.retryDelays) { tusOption.retryDelays = this.retryDelays; }
       if (this.chunkSize) { tusOption.chunkSize = this.chunkSize; }
       if (this.retryDelays) { tusOption.parallelUploads = this.parallelUploads; }
-      return  tusOption;
+      return tusOption;
     },
     upload(
       url: string,
@@ -211,6 +212,7 @@ export default Vue.extend({
           },
           // this.resumable === true ? undefined : this.resumable,
           this.tusOptionsFn,
+          this.skipCreate ? this.skipCreate : false
         );
       }
       return new Promise((resolve, reject) => {

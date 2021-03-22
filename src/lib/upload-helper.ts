@@ -99,11 +99,11 @@ class UploadHelper {
     try {
       const anyError = err as any;
       errorText = JSON.parse(anyError.originalRequest.response).message
-    } catch(e) {
+    } catch (e) {
 
     }
 
-    if(errorText === null) {
+    if (errorText === null) {
       errorText = err.message;
       if (err.response && err.response.data) {
         try {
@@ -299,6 +299,7 @@ class UploadHelper {
     headers: object,
     progressCallback: ProgressFn,
     tusOptionsFn?: TusOptionsFn,
+    skipCreate: boolean = false
   ) {
     const tusOptions: TusOptions = tusOptionsFn ? tusOptionsFn(fileRecord) : {};
     return new Promise((resolve, reject) => {
@@ -309,7 +310,6 @@ class UploadHelper {
       // Create a new tus upload
       const file = fileRecord.file;
       const upload = new tus.Upload(file, {
-        endpoint: url,
         headers,
         retryDelays: tusOptions.retryDelays ? tusOptions.retryDelays : [0, 3000, 5000, 10000, 20000],
         chunkSize: tusOptions.chunkSize ? tusOptions.chunkSize : Infinity,
@@ -317,9 +317,9 @@ class UploadHelper {
         metadata: tusOptions.metadata
           ? tusOptions.metadata
           : {
-              filename: file.name,
-              filetype: file.type,
-            },
+            filename: file.name,
+            filetype: file.type,
+          },
         onError(error: any) {
           reject(error);
           // console.log("Failed because: " + error)
@@ -332,6 +332,12 @@ class UploadHelper {
           resolve(upload);
         },
       });
+      if (skipCreate == false) {
+        upload.endpoint = url
+      }
+      else {
+        upload.uploadUrl = url
+      }
       fileRecord.tusUpload = upload;
       // Start the upload
       upload.start();
@@ -345,6 +351,7 @@ class UploadHelper {
     fileRecords: FileRecord[],
     progressFn?: (progress: number) => void,
     tusOptionsFn?: TusOptionsFn,
+    skipCreate?: boolean
   ) {
     let updateOverallProgress = () => {
       /* no op */
