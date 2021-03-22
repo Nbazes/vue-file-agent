@@ -313,7 +313,8 @@ class UploadHelper {
         headers,
         uploadUrl: url,
         retryDelays: tusOptions.retryDelays ? tusOptions.retryDelays : [0, 3000, 5000, 10000, 20000],
-        chunkSize: tusOptions.chunkSize ? tusOptions.chunkSize : Infinity,
+        chunkSize: 536870912,
+        // chunkSize: tusOptions.chunkSize ? tusOptions.chunkSize : Infinity,
         parallelUploads: tusOptions.parallelUploads ? tusOptions.parallelUploads : 1,
         metadata: tusOptions.metadata
           ? tusOptions.metadata
