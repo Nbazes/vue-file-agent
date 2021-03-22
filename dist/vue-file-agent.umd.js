@@ -2652,8 +2652,8 @@ var dragCounter = 0;
             if (this.helpText) {
                 return this.helpText;
             }
-            // return 'Choose ' + (this.hasMultiple ? 'files' : 'file') + ' or drag & drop here';
-            return (this.hasMultiple ? '여로 파일을 ' : '파일을') + ' 선택하거나 여기로 드래그하세요.';
+            return 'Choose ' + (this.hasMultiple ? 'files' : 'file') + ' or drag & drop here';
+            // return (this.hasMultiple ? '여로 파일을 ' : '파일을') + ' 선택하거나 여기로 드래그하세요.';
         },
         isDeletable: function () {
             if (typeof this.deletable === 'string') {
