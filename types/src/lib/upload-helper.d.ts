@@ -5,6 +5,8 @@ declare type CreateFormDataFn = (fileRecord: FileRecord) => FormData;
 export interface TusOptions {
     retryDelays?: number[];
     metadata?: any;
+    chunkSize?: number;
+    parallelUploads?: number;
 }
 export declare type TusOptionsFn = (fileRecord: FileRecord) => TusOptions;
 declare class UploadHelper {
@@ -16,8 +18,8 @@ declare class UploadHelper {
     upload(url: string, headers: object, fileRecords: FileRecord[], createFormData?: CreateFormDataFn, progressFn?: (progress: number) => void, configureFn?: ConfigureFn): Promise<unknown>;
     deleteUpload(url: string, headers: object, fileRecord: FileRecord, uploadData?: any, configureFn?: ConfigureFn): Promise<unknown>;
     updateUpload(url: string, headers: object, fileRecord: FileRecord, uploadData: any, configureFn?: ConfigureFn): Promise<unknown>;
-    doTusUpload(tus: any, url: string, fileRecord: FileRecord, headers: object, progressCallback: ProgressFn, tusOptionsFn?: TusOptionsFn): Promise<unknown>;
-    tusUpload(tus: any, url: string, headers: object, fileRecords: FileRecord[], progressFn?: (progress: number) => void, tusOptionsFn?: TusOptionsFn): Promise<unknown[]>;
+    doTusUpload(tus: any, url: string, fileRecord: FileRecord, headers: object, progressCallback: ProgressFn, tusOptionsFn?: TusOptionsFn, skipCreate?: boolean): Promise<unknown>;
+    tusUpload(tus: any, url: string, headers: object, fileRecords: FileRecord[], progressFn?: (progress: number) => void, tusOptionsFn?: TusOptionsFn, skipCreate?: boolean): Promise<unknown[]>;
     tusDeleteUpload(tus: any, url: string, headers: object, fileRecord: FileRecord): Promise<unknown>;
 }
 declare const _default: UploadHelper;

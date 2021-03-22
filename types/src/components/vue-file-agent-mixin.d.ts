@@ -19,6 +19,7 @@ declare const _default: import("vue/types/vue").ExtendedVue<Vue, {
     getFileRecordRawInstance(fileRecordOrRaw: FileRecord | RawFileRecord): RawFileRecord;
     getFileRecordInstance(fileRecordOrRaw: FileRecord | RawFileRecord): FileRecord;
     prepareConfigureFn(configureXhr?: ConfigureFn | undefined): ConfigureFn | undefined;
+    tusOptionsFn(): any;
     upload(url: string, headers: object, fileRecordsOrRaw: FileRecord[] | RawFileRecord[], createFormData?: ((fileRecord: FileRecord) => FormData) | undefined, configureXhr?: ConfigureFn | undefined): Promise<any>;
     deleteUpload(url: string, headers: object, fileRecordOrRaw: FileRecord | RawFileRecord, uploadData?: any, configureXhr?: ConfigureFn | undefined): Promise<any>;
     updateUpload(url: string, headers: object, fileRecord: FileRecord | RawFileRecord, uploadData?: any, configureXhr?: ConfigureFn | undefined): Promise<any>;
@@ -51,5 +52,5 @@ declare const _default: import("vue/types/vue").ExtendedVue<Vue, {
     isSortable: boolean;
     hasMultiple: boolean;
     shouldRead: boolean;
-}, Record<"accept" | "auto" | "averageColor" | "capture" | "compact" | "deletable" | "disabled" | "editable" | "errorText" | "helpText" | "linkable" | "maxFiles" | "maxSize" | "meta" | "multiple" | "progress" | "read" | "readonly" | "resumable" | "sortable" | "theme" | "thumbnailSize" | "uploadConfig" | "uploadHeaders" | "uploadUrl" | "uploadWithCredentials" | "value", any>>;
+}, Record<"value" | "deletable" | "editable" | "linkable" | "errorText" | "disabled" | "thumbnailSize" | "averageColor" | "accept" | "auto" | "capture" | "compact" | "helpText" | "maxFiles" | "maxSize" | "meta" | "multiple" | "progress" | "read" | "readonly" | "resumable" | "retryDelays" | "chunkSize" | "parallelUploads" | "sortable" | "theme" | "uploadConfig" | "uploadHeaders" | "uploadUrl" | "uploadWithCredentials" | "skipCreate", any>>;
 export default _default;
