@@ -311,6 +311,7 @@ class UploadHelper {
       const file = fileRecord.file;
       const upload = new tus.Upload(file, {
         headers,
+        uploadUrl: url,
         retryDelays: tusOptions.retryDelays ? tusOptions.retryDelays : [0, 3000, 5000, 10000, 20000],
         chunkSize: tusOptions.chunkSize ? tusOptions.chunkSize : Infinity,
         parallelUploads: tusOptions.parallelUploads ? tusOptions.parallelUploads : 1,
@@ -332,12 +333,7 @@ class UploadHelper {
           resolve(upload);
         },
       });
-      if (skipCreate == false) {
-        upload.endpoint = url
-      }
-      else {
-        upload.uploadUrl = url
-      }
+     
       fileRecord.tusUpload = upload;
       // Start the upload
       upload.start();
